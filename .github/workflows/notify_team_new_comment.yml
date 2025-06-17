@@ -68,5 +68,7 @@ jobs:
         with:
           webhook-type: incoming-webhook
           webhook: ${{ steps.check.outputs.webhook_url }}
-          payload: |
-            text: ${{ steps.check.outputs.text }}
+          payload: >
+            {
+              "text": "${{ steps.check.outputs.text }}"
+            }
