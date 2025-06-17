@@ -43,7 +43,7 @@ module.exports = async ({ github, context, core }) => {
       */
 
 
-      message = `*[${repo}] New comment on issue: <${issueUrl}#issuecomment-${commentId}|${escapedTitle} by ${commentAuthor}>*`;
+      message = `*[${repo}] New comment on issue: <${issueUrl}#issuecomment-${commentId}|${escapedTitle} by ${commentAuthor}>*`.replace(/"/g, '\\"');
       core.setOutput('webhook_url', communityWebhookUrl);
     }
 
