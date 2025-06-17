@@ -33,7 +33,7 @@ module.exports = async ({ github, context, core }) => {
     const labelNames = labels.map(label => label.name);
       let message;
     if (hasLabel(labelNames, 'help wanted')) {
-      message = `*[${repo}] New comment on issue: <${issueUrl}#issuecomment-${commentId}|${escapedTitle} by ${commentAuthor}>*`.replace(/"/g, '\\"');
+      message = `*[${repo}] New comment on issue: <${issueUrl}#issuecomment-${commentId}|${escapedTitle} by ${commentAuthor}>*`;
       core.setOutput('webhook_url', slackWebhookUrl);
     } else {
       /*bot reply code here
@@ -43,7 +43,7 @@ module.exports = async ({ github, context, core }) => {
       */
 
 
-      message = `*[${repo}] New comment on issue: <${issueUrl}#issuecomment-${commentId}|${escapedTitle} by ${commentAuthor}>*`.replace(/"/g, '\\"');
+      message = `*[${repo}] New comment on issue: <${issueUrl}#issuecomment-${commentId}|${escapedTitle} by ${commentAuthor}>*`;
       core.setOutput('webhook_url', communityWebhookUrl);
     }
 
