@@ -66,6 +66,6 @@ jobs:
         uses: slackapi/slack-github-action@v2.1.0
         with:
           webhook-type: incoming-webhook
-          webhook: ${{ secrets.steps.check.outputs.webhook_url }}
+          webhook: ${{ steps.check.outputs.webhook_url }}
           payload: |
-            text: ${{ secrets.steps.check.outputs.text }}
+            text: ${{ steps.check.outputs.text }}
