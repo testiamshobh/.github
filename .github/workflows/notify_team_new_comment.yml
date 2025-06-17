@@ -54,7 +54,7 @@ jobs:
         id: check
         uses: actions/github-script@v7
         with:
-          token: ${{ steps.generate-token.outputs.token }}
+          github-token: ${{ steps.generate-token.outputs.token }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_COMMUNITY_NOTIFICATIONS_WEBHOOK_URL: ${{ secrets.SLACK_COMMUNITY_NOTIFICATIONS_WEBHOOK_URL }}
           script: |

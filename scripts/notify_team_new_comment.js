@@ -24,7 +24,7 @@ module.exports = async ({ github, context, core }) => {
       core.setOutput('isMaintainer', false);
     }
 
-    const { data: labels } = await github.issues.listLabelsOnIssue({
+    const { data: labels } = await github.rest.issues.listLabelsOnIssue({
       owner,
       repo,
       issue_number: issueNumber
