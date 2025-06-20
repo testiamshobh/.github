@@ -41,6 +41,7 @@ module.exports = async ({ github, context, core }) => {
     } else {
       const oneHourBefore = new Date(commentTime - 3600000);
       const matchedKeywords = keywords.find(keyword => commentBody.toLowerCase().includes(keyword));
+      let lastBotComment;
       if(matchedKeywords){
           const PastComments = await github.rest.issues.listComments({
               owner,
@@ -51,7 +52,6 @@ module.exports = async ({ github, context, core }) => {
 
           const PastBotComments = PastComments.data.filter(comment => comment.user.login === 'testshobh[bot]');
 
-          let lastBotComment;
           if(PastBotComments.length > 0){
               lastBotComment = PastBotComments.at(-1);
           } else if(PastBotComments.length === 0){
