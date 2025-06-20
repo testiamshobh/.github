@@ -19,19 +19,12 @@ module.exports = async ({ github, context, core }) => {
     const slackWebhookUrl = process.env.SLACK_WEBHOOK_URL;
     const communityWebhookUrl = process.env.SLACK_COMMUNITY_NOTIFICATIONS_WEBHOOK_URL;
 
-    const Maintainers = ['user1', 'user2', 'testshobh[bot]'];
+    const Close_Contributors = ['user1', 'user2', 'testshobh[bot]'];
     const keywordsPath = path.join(__dirname, 'keywords.txt');
     const keywords = fs.readFileSync(keywordsPath, 'utf-8')
         .split('\n')
         .map(k => k.trim().toLowerCase())
         .filter(Boolean);
-
-    if (Maintainers.includes(commentAuthor)) {
-      core.setOutput('isMaintainer', true);
-      return;
-    } else {
-      core.setOutput('isMaintainer', false);
-    }
 
     const { data: labels } = await github.rest.issues.listLabelsOnIssue({
       owner,
@@ -40,8 +33,8 @@ module.exports = async ({ github, context, core }) => {
     });
 
     const labelNames = labels.map(label => label.name);
-      let message;
-    if (hasLabel(labelNames, 'help wanted')) {
+    let message;
+    if (hasLabel(labelNames, 'help wanted') || Close_Contributors.includes(commentAuthor)) {
       message = `*[${repo}] New comment on issue: <${issueUrl}#issuecomment-${commentId}|${escapedTitle} by ${commentAuthor}>*`;
       core.setOutput('webhook_url', slackWebhookUrl);
     } else {
