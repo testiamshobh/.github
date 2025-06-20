@@ -55,7 +55,7 @@ module.exports = async ({ github, context, core }) => {
           if(PastBotComments.length > 0){
               lastBotComment = PastBotComments.at(-1);
           } else if(PastBotComments.length === 0){
-              lastBotComment = github.rest.issues.createComment({
+              lastBotComment = await github.rest.issues.createComment({
                   owner,
                   repo,
                   issue_number: issueNumber,
