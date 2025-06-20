@@ -27,7 +27,7 @@ jobs:
         github.event.comment.author_association != 'MEMBER' &&
         github.event.comment.author_association != 'OWNER' &&
         github.event.comment.user.login != 'sentry-io[bot]' &&
-        github.event.comment.user.login != 'learning-equality-bot[bot]'
+        github.event.comment.user.login != 'testshobh[bot]'
       }}
 
     runs-on: ubuntu-latest
