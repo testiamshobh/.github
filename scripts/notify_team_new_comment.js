@@ -66,11 +66,14 @@ We really appreciate your willingness to help — feel free to pick another issu
 `
               });
           }
+          message = `*[${repo}] New comment on issue: <${issueUrl}#issuecomment-${commentId}|${escapedTitle} by ${commentAuthor}> [last comment by the bot ${lastBotComment.html_url}]*`;
+      } else {
+          message = `*[${repo}] New comment on issue: <${issueUrl}#issuecomment-${commentId}|${escapedTitle} by ${commentAuthor}>*`;
       }
 
 
 
-      message = `*[${repo}] New comment on issue: <${issueUrl}#issuecomment-${commentId}|${escapedTitle} by ${commentAuthor}> [last comment by the bot ${lastBotComment.html_url}]*`;
+
       core.setOutput('webhook_url', communityWebhookUrl);
     }
 
