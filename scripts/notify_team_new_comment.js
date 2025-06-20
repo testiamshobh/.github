@@ -19,7 +19,7 @@ module.exports = async ({ github, context, core }) => {
     const slackWebhookUrl = process.env.SLACK_WEBHOOK_URL;
     const communityWebhookUrl = process.env.SLACK_COMMUNITY_NOTIFICATIONS_WEBHOOK_URL;
 
-    const Maintainers = ['user1', 'user2', 'user3'];
+    const Maintainers = ['user1', 'user2', 'testshobh'];
     const keywordsPath = path.join(__dirname, 'keywords.txt');
     const keywords = fs.readFileSync(keywordsPath, 'utf-8')
         .split('\n')
