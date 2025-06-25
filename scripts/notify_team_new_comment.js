@@ -41,7 +41,7 @@ We really appreciate your willingness to help — feel free to pick another issu
     let message;
 
     if (hasLabel(labelNames, 'help wanted') || Close_Contributors.includes(commentAuthor)) {
-      message = `*[${repo}] <${issueUrl}#issuecomment-${commentId}|New comment> on issue: <${issueUrl}|${escapedTitle} by ${commentAuthor}>*`;
+      message = `*[${repo}] <${issueUrl}#issuecomment-${commentId}|New comment> on issue: <${issueUrl}|${escapedTitle}> by ${commentAuthor}*`;
       core.setOutput('webhook_url', slackWebhookUrl);
     } else {
         const matchedKeywords = keywords.find(keyword => commentBody.toLowerCase().includes(keyword));
