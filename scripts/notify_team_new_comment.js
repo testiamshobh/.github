@@ -68,7 +68,7 @@ We really appreciate your willingness to help — feel free to pick another issu
                     body: `Hi @${commentAuthor} ${botMessage}`
                 });
                 core.setOutput('bot_replied', true);
-                const botReply = `*[${repo}] <${lastBotComment.html_url}|Bot response sent> on issue: <${issueUrl}|${escapedTitle}*`;
+                const botReply = `*[${repo}] <${lastBotComment.data.html_url}|Bot response sent> on issue: <${issueUrl}|${escapedTitle}>*`;
                 core.setOutput('bot_reply', botReply);
             }
         }
