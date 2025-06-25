@@ -59,7 +59,7 @@ We really appreciate your willingness to help — feel free to pick another issu
 
             if(PastBotComments.length > 0){
                 lastBotComment = PastBotComments.at(-1);
-                core.setOutput(false, bot_reply);
+                core.setOutput('bot_replied', false);
             } else if(PastBotComments.length === 0){
                 lastBotComment = await github.rest.issues.createComment({
                     owner,
@@ -69,7 +69,7 @@ We really appreciate your willingness to help — feel free to pick another issu
                 });
                 core.setOutput('bot_replied', true);
                 const botReply = `*[${repo}] <${lastBotComment.data.html_url}|Bot response sent> on issue: <${issueUrl}|${escapedTitle}>*`;
-                core.setOutput('bot_reply', botReply);
+                core.setOutput('bot_reply_message', botReply);
             }
         }
         message = `*[${repo}] <${issueUrl}#issuecomment-${commentId}|New comment> on issue: <${issueUrl}|${escapedTitle}> by <${commentAuthor}>*`;
