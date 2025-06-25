@@ -44,35 +44,35 @@ We really appreciate your willingness to help — feel free to pick another issu
       message = `*[${repo}] <${issueUrl}#issuecomment-${commentId}|New comment> on issue: <${issueUrl}|${escapedTitle} by ${commentAuthor}>*`;
       core.setOutput('webhook_url', slackWebhookUrl);
     } else {
-      if(commentAuthor == 'testshobh[bot]') {
-          message = `*[${repo}] <${issueUrl}#issuecomment-${commentId}|Bot response sent> on issue: <${issueUrl}|${escapedTitle}>*`;
-      } else {
-          const matchedKeywords = keywords.find(keyword => commentBody.toLowerCase().includes(keyword));
-          let lastBotComment;
-          if(matchedKeywords){
-              const oneHourBefore = new Date(commentTime - 3600000);
-              const PastComments = await github.rest.issues.listComments({
-                  owner,
-                  repo,
-                  issue_number: issueNumber,
-                  since: oneHourBefore.toISOString()
-              });
+        const matchedKeywords = keywords.find(keyword => commentBody.toLowerCase().includes(keyword));
+        let lastBotComment;
+        if(matchedKeywords){
+            const oneHourBefore = new Date(commentTime - 3600000);
+            const PastComments = await github.rest.issues.listComments({
+                owner,
+                repo,
+                issue_number: issueNumber,
+                since: oneHourBefore.toISOString()
+            });
 
-              const PastBotComments = PastComments.data.filter(comment => comment.user.login === 'testshobh[bot]');
+            const PastBotComments = PastComments.data.filter(comment => comment.user.login === 'testshobh[bot]');
 
-              if(PastBotComments.length > 0){
-                  lastBotComment = PastBotComments.at(-1);
-              } else if(PastBotComments.length === 0){
-                  lastBotComment = await github.rest.issues.createComment({
-                      owner,
-                      repo,
-                      issue_number: issueNumber,
-                      body: `Hi @${commentAuthor} ${botMessage}`
-                  });
-              }
-          }
-          message = `*[${repo}] <${issueUrl}#issuecomment-${commentId}|New comment> on issue: <${issueUrl}|${escapedTitle} by ${commentAuthor}>*`;
-      }
+            if(PastBotComments.length > 0){
+                lastBotComment = PastBotComments.at(-1);
+                core.setOutput(false, botReplied);
+            } else if(PastBotComments.length === 0){
+                lastBotComment = await github.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: issueNumber,
+                    body: `Hi @${commentAuthor} ${botMessage}`
+                });
+                core.setOutput('bot_replied', true);
+                const botMessage = `*[${repo}] <${lastBotComment.html_url}|Bot response sent> on issue: <${issueUrl}|${escapedTitle}*`;
+                core.setOutput('bot_message', botMessage);
+            }
+        }
+        message = `*[${repo}] <${issueUrl}#issuecomment-${commentId}|New comment> on issue: <${issueUrl}|${escapedTitle} by ${commentAuthor}>*`;
 
       core.setOutput('webhook_url', communityWebhookUrl);
     }
