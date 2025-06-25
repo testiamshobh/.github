@@ -72,7 +72,7 @@ We really appreciate your willingness to help — feel free to pick another issu
                 core.setOutput('bot_reply', botReply);
             }
         }
-        message = `*[${repo}] <${issueUrl}#issuecomment-${commentId}|New comment> on issue: <${issueUrl}|${escapedTitle} by ${commentAuthor}>*`;
+        message = `*[${repo}] <${issueUrl}#issuecomment-${commentId}|New comment> on issue: <${issueUrl}|${escapedTitle}> by <${commentAuthor}>*`;
 
       core.setOutput('webhook_url', communityWebhookUrl);
     }
