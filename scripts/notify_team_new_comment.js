@@ -59,7 +59,7 @@ We really appreciate your willingness to help — feel free to pick another issu
 
             if(PastBotComments.length > 0){
                 lastBotComment = PastBotComments.at(-1);
-                core.setOutput(false, botReplied);
+                core.setOutput(false, bot_reply);
             } else if(PastBotComments.length === 0){
                 lastBotComment = await github.rest.issues.createComment({
                     owner,
