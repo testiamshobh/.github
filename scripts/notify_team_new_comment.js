@@ -17,7 +17,6 @@ module.exports = async ({ github, context, core }) => {
     const slackWebhookUrl = process.env.SLACK_WEBHOOK_URL;
     const communityWebhookUrl = process.env.SLACK_COMMUNITY_NOTIFICATIONS_WEBHOOK_URL;
     const LE_bot_username = 'testshobh[bot]';
-    const message = `*[${repo}] <${issueUrl}#issuecomment-${commentId}|New comment> on issue: <${issueUrl}|${escapedTitle}> by ${commentAuthor}*`;
     const botMessage = `👋
 Thanks so much for your interest! This issue is currently reserved for the core team and isn’t available for assignment right now.
 If you’d like to get started contributing, please take a look at our [Contributing Guidelines](https://github.com/your-org/your-repo/blob/main/CONTRIBUTING.md) for tips on finding “help-wanted” issues, setting up your environment, and submitting a PR.
@@ -103,6 +102,7 @@ We really appreciate your willingness to help — feel free to pick another issu
 
     }
 
+    const message = `*[${repo}] <${issueUrl}#issuecomment-${commentId}|New comment> on issue: <${issueUrl}|${escapedTitle}> by ${commentAuthor}*`;
     core.setOutput('text', message);
 
   } catch (error) {
