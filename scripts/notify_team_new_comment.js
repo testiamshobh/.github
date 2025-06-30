@@ -90,7 +90,7 @@ We really appreciate your willingness to help — feel free to pick another issu
       if(matchedKeywords){
         core.setOutput('webhook_url', communityWebhookUrl);
         let lastBotComment;
-        let PastBotComments = findRecentCommentsByUser(LE_bot_username);
+        let PastBotComments = await findRecentCommentsByUser(LE_bot_username);
         // post a bot reply if there is matched keyword and no previous bot comment in past hour
         if(PastBotComments.length > 0){
                 lastBotComment = PastBotComments.at(-1);
