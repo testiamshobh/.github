@@ -88,9 +88,10 @@ We really appreciate your willingness to help — feel free to pick another issu
     } else {
       const matchedKeywords = keywords.find(keyword => commentBody.toLowerCase().includes(keyword));
       if(matchedKeywords){
+        core.setOutput('webhook_url', communityWebhookUrl);
         let lastBotComment;
         let PastBotComments = findRecentCommentsByUser(LE_bot_username);
-
+        // post a bot reply if there is matched keyword and no previous bot comment in past hour
         if(PastBotComments.length > 0){
                 lastBotComment = PastBotComments.at(-1);
                 core.setOutput('bot_replied', false);
@@ -98,7 +99,7 @@ We really appreciate your willingness to help — feel free to pick another issu
                 lastBotComment = botReply();
             }
         }
-      core.setOutput('webhook_url', communityWebhookUrl);
+
     }
 
     core.setOutput('text', message);
