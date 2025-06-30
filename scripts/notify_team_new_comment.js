@@ -97,7 +97,7 @@ We really appreciate your willingness to help — feel free to pick another issu
                 lastBotComment = PastBotComments.at(-1);
                 core.setOutput('bot_replied', false);
             } else if(PastBotComments.length === 0){
-                lastBotComment = botReply();
+                lastBotComment = await botReply();
             }
         }
 
