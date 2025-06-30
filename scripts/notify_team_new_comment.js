@@ -39,7 +39,6 @@ We really appreciate your willingness to help — feel free to pick another issu
             issue_number: issueNumber
           });
           labels = response.data.map(label => label.name);
-          console.log('Labels on issue:', labels);
         } catch (error) {
            core.warning(`⚠️ Failed to fetch labels on issue #${issueNumber}: ${error.message}`);
            labels = [];
@@ -97,6 +96,7 @@ We really appreciate your willingness to help — feel free to pick another issu
                 lastBotComment = PastBotComments.at(-1);
                 core.setOutput('bot_replied', false);
             } else if(PastBotComments.length === 0){
+                console.log("bot is replying");
                 lastBotComment = await botReply();
             }
         }
