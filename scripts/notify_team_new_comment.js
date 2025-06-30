@@ -41,7 +41,7 @@ We really appreciate your willingness to help — feel free to pick another issu
           labels = response.data.map(label => label.name);
           console.log('Labels on issue:', labels);
         } catch (error) {
-          core.warning(`⚠️ Failed to fetch labels on issue #${issueNumber}: ${error.message}`);
+           core.warning(`⚠️ Failed to fetch labels on issue #${issueNumber}: ${error.message}`);
            labels = [];
         }
         return labels.some(label => label.toLowerCase() === name.toLowerCase());
@@ -84,7 +84,7 @@ We really appreciate your willingness to help — feel free to pick another issu
     }
 
 
-    if (hasLabel('help wanted') || Close_Contributors.includes(commentAuthor)) {
+    if (await hasLabel('help wanted') || Close_Contributors.includes(commentAuthor)) {
       core.setOutput('webhook_url', slackWebhookUrl);
     } else {
       const matchedKeywords = keywords.find(keyword => commentBody.toLowerCase().includes(keyword));
