@@ -23,10 +23,12 @@ If you’d like to get started contributing, please take a look at our [Contribu
 We really appreciate your willingness to help — feel free to pick another issue labeled **help-wanted** and let us know if you have any questions. 😊`
     const Close_Contributors = ['user1', 'user2'];
     const keywordsPath = path.join(__dirname, 'keywords.txt');
-    const keywords = fs.readFileSync(keywordsPath, 'utf-8')
-        .split('\n')
-        .map(k => k.trim().toLowerCase())
-        .filter(Boolean);
+    const keywordRegexes = fs.readFileSync(keywordsPath, 'utf-8')
+      .split('\n')
+      .map(k => k.trim().toLowerCase())
+      .filter(Boolean)
+      .map(keyword => new RegExp(`\\b${keyword}\\b`, 'i'));
+
 
 
     async function hasLabel(name) {
@@ -85,8 +87,8 @@ We really appreciate your willingness to help — feel free to pick another issu
     if (await hasLabel('help wanted') || Close_Contributors.includes(commentAuthor)) {
       core.setOutput('webhook_url', slackWebhookUrl);
     } else {
-      const matchedKeywords = keywords.find(keyword => commentBody.toLowerCase().includes(keyword));
-      if(matchedKeywords){
+      const matchedKeyword = keywordRegexes.find(regex => regex.test(commentBody));
+      if(matchedKeyword){
         core.setOutput('webhook_url', communityWebhookUrl);
         let lastBotComment;
         let PastBotComments = await findRecentCommentsByUser(LE_bot_username);
