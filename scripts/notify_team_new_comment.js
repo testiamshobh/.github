@@ -87,12 +87,12 @@ We really appreciate your willingness to help — feel free to pick another issu
     if (await hasLabel('help wanted') || Close_Contributors.includes(commentAuthor)) {
       core.setOutput('webhook_url', slackWebhookUrl);
     } else {
+      core.setOutput('webhook_url', communityWebhookUrl);
       const matchedKeyword = keywordRegexes.find(regex => regex.test(commentBody));
+      // post a bot reply if there is matched keyword and no previous bot comment in past hour
       if(matchedKeyword){
-        core.setOutput('webhook_url', communityWebhookUrl);
         let lastBotComment;
         let PastBotComments = await findRecentCommentsByUser(LE_bot_username);
-        // post a bot reply if there is matched keyword and no previous bot comment in past hour
         if(PastBotComments.length > 0){
                 lastBotComment = PastBotComments.at(-1);
                 core.setOutput('bot_replied', false);
@@ -100,8 +100,7 @@ We really appreciate your willingness to help — feel free to pick another issu
                 console.log("bot is replying");
                 lastBotComment = await botReply();
             }
-        }
-
+      }
     }
 
     const message = `*[${repo}] <${issueUrl}#issuecomment-${commentId}|New comment> on issue: <${issueUrl}|${escapedTitle}> by ${commentAuthor}*`;
