@@ -36,6 +36,7 @@ jobs:
         with:
           repository: testiamshobh/.github
           ref: main
+          token: ${{ steps.generate-token.outputs.token }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
