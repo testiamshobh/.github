@@ -8,7 +8,7 @@ module.exports = async ({ core, github, context, username }) => {
   }
 
   const org = context.repo.owner;
-  const teamsToCheck = ['gsoc-contributors', 'learning-equality-community-guide'];
+  const teamsToCheck = ['gsoc-contributors', 'learning-equality-community-guide', 'tset'];
 
   const promises = teamsToCheck.map(team_slug =>
     github.rest.teams.getMembershipForUserInOrg({
