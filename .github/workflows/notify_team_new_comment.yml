@@ -20,7 +20,7 @@ on:
 jobs:
   check-if-close-contributor:
         name: Check if user is a close contributor
-        uses: ./github/workflows/is-close-contributor.yml@main
+        uses: testiamshobh/.github/.github/workflows/is-close-contributor.yml@main
         secrets:
             APP_ID: ${{ secrets.APP_ID }}
             APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
