@@ -18,13 +18,20 @@ on:
 
 
 jobs:
+  check-if-close-contributor:
+        name: Check if user is a close contributor
+        uses: ./.github/workflows/is-close-contributor.yml
+        with:
+            username: ${{ github.event.comment.user.login }}
+
   contributor_issue_comment:
     name: Contributor issue comment
+    needs: [check-if-close-contributor]
 
     if: >-
       ${{
         !github.event.issue.pull_request &&
-        github.event.comment.author_association != 'MEMBER' &&
+        (github.event.comment.author_association != 'MEMBER' || needs.check-if-close-contributor.outputs.is-close-contributor == 'true') &&
         github.event.comment.author_association != 'OWNER' &&
         github.event.comment.user.login != 'sentry-io[bot]' &&
         github.event.comment.user.login != 'testshobh[bot]'
@@ -65,6 +72,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_COMMUNITY_NOTIFICATIONS_WEBHOOK_URL: ${{ secrets.SLACK_COMMUNITY_NOTIFICATIONS_WEBHOOK_URL }}
+          IS_CLOSE_CONTRIBUTOR: ${{ needs.check-if-close-contributor.outputs.is-close-contributor }}
 
       - name: Send message to Slack channel
         uses: slackapi/slack-github-action@v2.1.0

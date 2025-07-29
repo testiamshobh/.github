@@ -1,6 +1,9 @@
-const fs = require('fs');
-const path = require('path');
-const { LE_BOT_USERNAME, BOT_MESSAGE, CLOSE_CONTRIBUTORS } = require('./constants');
+const {
+  LE_BOT_USERNAME,
+  KEYWORDS_DETECT_ASSIGNMENT_REQUEST,
+  ISSUE_LABEL_HELP_WANTED,
+  BOT_MESSAGE_ISSUE_NOT_OPEN
+} = require('./constants');
 
 module.exports = async ({ github, context, core }) => {
   try {
@@ -15,11 +18,9 @@ module.exports = async ({ github, context, core }) => {
     const commentBody = context.payload.comment.body;
     const repo = context.repo.repo;
     const owner = context.repo.owner;
-    const slackWebhookUrl = process.env.SLACK_WEBHOOK_URL;
-    const communityWebhookUrl = process.env.SLACK_COMMUNITY_NOTIFICATIONS_WEBHOOK_URL;
-    const keywordsPath = path.join(__dirname, 'keywords.txt');
-    const keywordRegexes = fs.readFileSync(keywordsPath, 'utf-8')
-      .split('\n')
+    const supportDevSlackWebhookUrl = process.env.SLACK_WEBHOOK_URL;
+    const supportDevNotificationsSlackWebhookUrl = process.env.SLACK_COMMUNITY_NOTIFICATIONS_WEBHOOK_URL;
+    const keywordRegexes = KEYWORDS_DETECT_ASSIGNMENT_REQUEST
       .map(k => k.trim().toLowerCase())
       .filter(Boolean)
       .map(keyword => new RegExp(`\\b${keyword}\\b`, 'i'));
@@ -64,12 +65,12 @@ module.exports = async ({ github, context, core }) => {
               owner,
               repo,
               issue_number: issueNumber,
-              body: `Hi @${commentAuthor} ${BOT_MESSAGE}`
+              body: BOT_MESSAGE_ISSUE_NOT_OPEN
             });
             if (response?.data?.html_url) {
               core.setOutput('bot_replied', true);
-              const botReplyMessage = `*[${repo}] <${response.data.html_url}|Bot response sent> on issue: <${issueUrl}|${escapedTitle}>*`;
-              core.setOutput('bot_reply_message', botReplyMessage);
+              const slackMessage = `*[${repo}] <${response.data.html_url}|Bot response sent> on issue: <${issueUrl}|${escapedTitle}>*`;
+              core.setOutput('slack_notification_bot_comment', slackMessage);
             }
         } catch (error) {
             core.warning(`Failed to post bot comment: ${error.message}`);
@@ -79,10 +80,10 @@ module.exports = async ({ github, context, core }) => {
     }
 
 
-    if (await hasLabel('help wanted') || CLOSE_CONTRIBUTORS.includes(commentAuthor)) {
-      core.setOutput('webhook_url', slackWebhookUrl);
+    if ( process.env.IS_CLOSE_CONTRIBUTOR || await hasLabel(ISSUE_LABEL_HELP_WANTED) ) {
+      core.setOutput('webhook_url', supportDevSlackWebhookUrl);
     } else {
-      core.setOutput('webhook_url', communityWebhookUrl);
+      core.setOutput('webhook_url', supportDevNotificationsSlackWebhookUrl);
       const matchedKeyword = keywordRegexes.find(regex => regex.test(commentBody));
       // post a bot reply if there is matched keyword and no previous bot comment in past hour
       if(matchedKeyword){
@@ -99,7 +100,7 @@ module.exports = async ({ github, context, core }) => {
     }
 
     const message = `*[${repo}] <${issueUrl}#issuecomment-${commentId}|New comment> on issue: <${issueUrl}|${escapedTitle}> by ${commentAuthor}*`;
-    core.setOutput('text', message);
+    core.setOutput('slack_notification_comment', message);
 
   } catch (error) {
     core.setFailed(`Action failed with error: ${error.message}`);
