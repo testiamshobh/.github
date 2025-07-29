@@ -20,7 +20,7 @@ on:
 jobs:
   check-if-close-contributor:
         name: Check if user is a close contributor
-        uses: testiamshobh/.github/.github/workflows/is-close-contributor.yml
+        uses: testiamshobh/.github/.github/workflows/is-close-contributor.yml@main
         with:
             username: ${{ github.event.comment.user.login }}
 
