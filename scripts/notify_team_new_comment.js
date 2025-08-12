@@ -80,7 +80,7 @@ module.exports = async ({ github, context, core }) => {
     }
 
 
-    if ( process.env.IS_CLOSE_CONTRIBUTOR || await hasLabel(ISSUE_LABEL_HELP_WANTED) ) {
+    if ( process.env.IS_CLOSE_CONTRIBUTOR || hasLabel(ISSUE_LABEL_HELP_WANTED) ) {
       core.setOutput('webhook_url', supportDevSlackWebhookUrl);
     } else {
       core.setInfo("Setting up notifications for non-contributors");
