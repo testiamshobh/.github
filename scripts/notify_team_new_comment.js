@@ -81,10 +81,9 @@ module.exports = async ({ github, context, core }) => {
 
     if ( process.env.IS_CLOSE_CONTRIBUTOR || await hasLabel(ISSUE_LABEL_HELP_WANTED) ) {
       const flag = await hasLabel(ISSUE_LABEL_HELP_WANTED);
-      core.setInfo(`Setting up notifications for contributors '${flag}'`);
+      core.Info(`Setting up notifications for contributors '${flag}'`);
       core.setOutput('webhook_url', supportDevSlackWebhookUrl);
     } else {
-      core.setInfo("Setting up notifications for non-contributors");
       core.setOutput('webhook_url', supportDevNotificationsSlackWebhookUrl);
       const matchedKeyword = keywordRegexes.find(regex => regex.test(commentBody));
       // post a bot reply if there is matched keyword and no previous bot comment in past hour
